@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ChinookSystem.Data.Entities
 {
     [Table("Tracks")]
-    class Track
+    public class Track
     {      
         [Key]
         public int TrackId { get; set; }

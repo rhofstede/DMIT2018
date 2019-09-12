@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ChinookSystem.Data.Entities
 {
     [Table("MediaTypes")]
-    class MediaType
+    public class MediaType
     {       
         [Key]
         public int MediaTypeID { get; set; }
