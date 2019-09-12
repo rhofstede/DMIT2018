@@ -17,8 +17,8 @@ namespace ChinookSystem.Data.Entities
         [Key]
         public int GenreID { get; set; }
         public string Name { get; set; }
-        
-        public virtual Genre Genre { get; set; }
+
+        public virtual ICollection<Track> Tracks { get; set; }
     }
    
 }
