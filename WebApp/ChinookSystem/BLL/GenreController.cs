@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 #region
 using ChinookSystem.DAL;
 using ChinookSystem.Data.Entities;
+using System.ComponentModel;
 #endregion
 
 namespace ChinookSystem.BLL
 {
+    [DataObject]
     class GenreController
     {
         public List<Genre> Genre_List()

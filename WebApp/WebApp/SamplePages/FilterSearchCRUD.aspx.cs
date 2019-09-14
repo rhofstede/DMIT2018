@@ -34,5 +34,7 @@ namespace WebApp.SamplePages
             ArtistList.DataBind();
             ArtistList.Items.Insert(0, "Select");
         }
+
+        
     }
 }
