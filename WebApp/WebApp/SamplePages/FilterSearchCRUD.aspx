@@ -53,7 +53,7 @@
         <br />
          <asp:Label ID="label4" runat="server" Text="Artist" MaxLength="160"></asp:Label>
         &nbsp;&nbsp;
-       <asp:DropDownList ID="EditAlbumArtistList" runat="server" ></asp:DropDownList>
+       <asp:DropDownList ID="EditAlbumArtistList" runat="server" DataSourceID="EditArtistListODS" DataTextField="Name" DataValueField="ArtistID"></asp:DropDownList>
         <br />
          <asp:Label ID="label5" runat="server" Text="Year:"></asp:Label>
         &nbsp;&nbsp;
@@ -69,10 +69,12 @@
     </div>
 
     <asp:ObjectDataSource ID="AlbumListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Album_GetByArtist" TypeName="ChinookSystem.BLL.AlbumController">
-
         <SelectParameters>
             <asp:ControlParameter ControlID="ArtistList" PropertyName="SelectedValue" DefaultValue="0" Name="artistID" Type="Int32"></asp:ControlParameter>
         </SelectParameters>
+    </asp:ObjectDataSource>
+
+    <asp:ObjectDataSource ID="EditArtistListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Artist_List" TypeName="ChinookSystem.BLL.ArtistController">
     </asp:ObjectDataSource>
 
 </asp:Content>
