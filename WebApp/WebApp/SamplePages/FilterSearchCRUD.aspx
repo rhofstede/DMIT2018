@@ -67,4 +67,9 @@
         <asp:LinkButton ID="Update" runat="server" >Update</asp:LinkButton> &nbsp;&nbsp;
         <asp:LinkButton ID="Remove" runat="server" CausesValidation="false">Remove</asp:LinkButton>
     </div>
+
+    <asp:ObjectDataSource ID="AlbumListODS" runat="server">
+
+    </asp:ObjectDataSource>
+
 </asp:Content>

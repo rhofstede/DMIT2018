@@ -13,7 +13,7 @@ using System.ComponentModel;
 namespace ChinookSystem.BLL
 {
     [DataObject]
-    class GenreController
+    public class GenreController
     {
         public List<Genre> Genre_List()
         {

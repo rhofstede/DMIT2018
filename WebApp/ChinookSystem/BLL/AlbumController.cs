@@ -13,7 +13,7 @@ using System.ComponentModel;
 namespace ChinookSystem.BLL
 {
     [DataObject]
-    class AlbumController
+    public class AlbumController
     {
         public List<Album> Album_List()
         {

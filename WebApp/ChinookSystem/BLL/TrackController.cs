@@ -13,7 +13,7 @@ using System.ComponentModel;
 namespace ChinookSystem.BLL
 {
     [DataObject]
-    class TrackController
+    public class TrackController
     {
         public List<Track> Track_List()
         {

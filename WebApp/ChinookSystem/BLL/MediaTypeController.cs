@@ -13,7 +13,7 @@ using System.ComponentModel;
 namespace ChinookSystem.BLL
 {
     [DataObject]
-    class MediaTypeController
+    public class MediaTypeController
     {
         public List<MediaType> MediaType_List()
         {
