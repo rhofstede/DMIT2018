@@ -32,7 +32,7 @@ namespace WebApp.SamplePages
             ArtistList.DataTextField = nameof(Artist.Name);
             ArtistList.DataValueField = nameof(Artist.ArtistID);
             ArtistList.DataBind();
-            ArtistList.Items.Insert(0, "Select");
+            //ArtistList.Items.Insert(0, "Select");
         }
 
         
