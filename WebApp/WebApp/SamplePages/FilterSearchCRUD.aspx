@@ -68,8 +68,11 @@
         <asp:LinkButton ID="Remove" runat="server" CausesValidation="false">Remove</asp:LinkButton>
     </div>
 
-    <asp:ObjectDataSource ID="AlbumListODS" runat="server">
+    <asp:ObjectDataSource ID="AlbumListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Album_GetByArtist" TypeName="ChinookSystem.BLL.AlbumController">
 
+        <SelectParameters>
+            <asp:ControlParameter ControlID="ArtistList" PropertyName="SelectedValue" DefaultValue="0" Name="artistID" Type="Int32"></asp:ControlParameter>
+        </SelectParameters>
     </asp:ObjectDataSource>
 
 </asp:Content>
