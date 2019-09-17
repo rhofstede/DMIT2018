@@ -36,8 +36,8 @@ namespace ChinookSystem.BLL
         {
             using(var context = new ChinookContext())
             {
-                var results = from x in context.Albums where x.ArtistID == artistID select x;
-                    return results.ToList();
+                var results = from x in context.Albums where x.ArtistID == artistID select x;                
+                return results.ToList();
             }
         }
     }

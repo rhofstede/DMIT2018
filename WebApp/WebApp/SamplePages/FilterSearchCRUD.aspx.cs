@@ -35,26 +35,37 @@ namespace WebApp.SamplePages
             //ArtistList.Items.Insert(0, "Select");
         }
 
+        //method called by ods
+        protected void CheckForException(object sender, ObjectDataSourceStatusEventArgs e)
+        {
+            MessageUserControl.HandleDataBoundException(e);
+        }
+
         protected void AlbumList_SelectedIndexChanged(object sender, EventArgs e)
         {
             GridViewRow row = AlbumList.Rows[AlbumList.SelectedIndex];
             string albumID = (row.FindControl("AlbumID") as Label).Text;
-            //add error handling here
-            AlbumController controller = new AlbumController();
-            Album album = controller.GetAlbum(int.Parse(albumID));
-            if (album == null)
-            {
-                //clear and throw exception
-                //error message returned
-            }
-            else
-            {
-                EditAlbumID.Text = album.AlbumID.ToString();
-                EditTitle.Text = album.Title;
-                EditAlbumArtistList.SelectedValue = album.ArtistID.ToString();
-                EditReleaseYear.Text = album.ReleaseYear.ToString();
-                EditReleaseLabel.Text = album.ReleaseLabel == null ? "" : album.ReleaseLabel;
-            }
+            MessageUserControl.TryRun(
+                () =>
+                {
+                    AlbumController controller = new AlbumController();
+                    Album album = controller.GetAlbum(int.Parse(albumID));                    
+                    if (album == null)
+                    {
+                        //ClearControls();
+                        throw new Exception("Record no longer exists on file.");
+                    }
+                    else
+                    {
+                        EditAlbumID.Text = album.AlbumID.ToString();
+                        EditTitle.Text = album.Title;
+                        EditAlbumArtistList.SelectedValue = album.ArtistID.ToString();
+                        EditReleaseYear.Text = album.ReleaseYear.ToString();
+                        EditReleaseLabel.Text = album.ReleaseLabel ?? "";
+                        //EditReleaseLabel.Text = album.ReleaseLabel == null ? "" : album.ReleaseLabel;
+                    }
+                },"Find Album", "Album found" //success messages
+            );    
         }
     }
 }
