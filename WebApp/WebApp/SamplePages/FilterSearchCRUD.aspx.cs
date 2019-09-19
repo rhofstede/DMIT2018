@@ -157,7 +157,35 @@ namespace WebApp.SamplePages
 
         protected void Remove_Click(object sender, EventArgs e)
         {
+            string editID = EditAlbumID.Text;
+            int albumID = 0;
+            if (string.IsNullOrEmpty(editID))
+            {
+                MessageUserControl.ShowInfo("Error", "Must have album to edit.");
+            }
+            else if (!int.TryParse(editID, out albumID))
+            {
+                MessageUserControl.ShowInfo("Error", "Invalid album ID");
+            }
+            else
+            {                
+                MessageUserControl.TryRun(() =>
+                {
+                    AlbumController controller = new AlbumController();
+                    int rows = controller.Album_Delete(albumID);
 
+                    if (rows > 0)
+                    {
+                        AlbumList.DataBind();
+                        EditAlbumID.Text = "";
+                    }
+                    else
+                    {
+                        throw new Exception("No album found. Try again.");
+                    }
+
+                }, "Sucessful!", "Album deleted.");
+            }
         }
     }
 }

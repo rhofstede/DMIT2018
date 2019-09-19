@@ -78,7 +78,7 @@
         <br />
         <asp:LinkButton ID="Add" runat="server" OnClick="Add_Click" >Add</asp:LinkButton> &nbsp;&nbsp;
         <asp:LinkButton ID="Update" runat="server" OnClick="Update_Click" >Update</asp:LinkButton> &nbsp;&nbsp;
-        <asp:LinkButton ID="Remove" runat="server" CausesValidation="false" OnClick="Remove_Click">Remove</asp:LinkButton>
+        <asp:LinkButton ID="Remove" runat="server" CausesValidation="false" OnClick="Remove_Click" OnClientClick="return confirm('Are you sure you want to delete this?')">Remove</asp:LinkButton>
     </div>
 
     <asp:ObjectDataSource ID="AlbumListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Album_GetByArtist" TypeName="ChinookSystem.BLL.AlbumController" OnSelected="CheckForException">
