@@ -109,7 +109,50 @@ namespace WebApp.SamplePages
 
         protected void Update_Click(object sender, EventArgs e)
         {
+            if (Page.IsValid)
+            {
+                string editID = EditAlbumID.Text;
+                int albumID = 0;
+                if (string.IsNullOrEmpty(editID))
+                {
+                    MessageUserControl.ShowInfo("Error","Must have album to edit.");
+                }
+                else if (!int.TryParse(editID, out albumID))
+                {
+                    MessageUserControl.ShowInfo("Error","Invalid album ID");
+                }
+                else
+                {
+                    string title = EditTitle.Text;
+                    int year = int.Parse(EditReleaseYear.Text);
+                    string label = EditReleaseLabel.Text == "" ? null : EditReleaseLabel.Text;
+                    int artist = int.Parse(EditAlbumArtistList.SelectedValue);
+                    int editAlbumID = int.Parse(EditAlbumID.Text);
 
+                    Album newAlbum = new Album();
+                    newAlbum.AlbumID = editAlbumID;
+                    newAlbum.ArtistID = artist;
+                    newAlbum.Title = title;
+                    newAlbum.ReleaseYear = year;
+                    newAlbum.ReleaseLabel = label;
+
+                    MessageUserControl.TryRun(() =>
+                    {
+                        AlbumController controller = new AlbumController();
+                        int rows = controller.Album_Update(newAlbum);
+
+                        if (rows > 0)
+                        {
+                            AlbumList.DataBind();
+                        }
+                        else
+                        {
+                            throw new Exception("No album found. Try again.");
+                        }
+
+                    }, "Sucessful!", "Album updated.");
+                }                
+            }
         }
 
         protected void Remove_Click(object sender, EventArgs e)
