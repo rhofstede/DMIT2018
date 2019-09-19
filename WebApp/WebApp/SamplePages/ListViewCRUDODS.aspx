@@ -108,7 +108,7 @@
                                 <th runat="server">ArtistID</th>
                                 <th runat="server">ReleaseYear</th>
                                 <th runat="server">ReleaseLabel</th>
-                                <th runat="server">Artist</th>
+                                
                             </tr>
                             <tr runat="server" id="itemPlaceholder"></tr>
                         </table>
