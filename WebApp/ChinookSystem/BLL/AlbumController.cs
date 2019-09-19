@@ -15,6 +15,7 @@ namespace ChinookSystem.BLL
     [DataObject]
     public class AlbumController
     {
+        #region Queries
         public List<Album> Album_List()
         {
             using (var context = new ChinookContext())
@@ -40,5 +41,44 @@ namespace ChinookSystem.BLL
                 return results.ToList();
             }
         }
+        #endregion
+
+        #region CRUD
+        public int Album_Add(Album album)
+        {
+            using(var context = new ChinookContext())
+            {
+                context.Albums.Add(album);  //staged
+                context.SaveChanges();      //committed
+                return album.AlbumID;
+            }
+        }
+
+        public int Album_Update(Album album)
+        {
+            using (var context = new ChinookContext())
+            {
+                context.Entry(album).State = System.Data.Entity.EntityState.Modified;   //staged
+                return context.SaveChanges();                                           //committed
+            }
+        }
+
+        public int Album_Delete(int albumID)
+        {
+            using (var context = new ChinookContext())
+            {
+                var existing = context.Albums.Find(albumID);
+                if (existing == null)
+                {
+                    throw new Exception("Album not on file. Delete failed.");
+                }
+                else
+                {
+                    context.Albums.Remove(existing);                //staged
+                    return context.SaveChanges();                   //committed
+                }                
+            }
+        }
+        #endregion
     }
 }
