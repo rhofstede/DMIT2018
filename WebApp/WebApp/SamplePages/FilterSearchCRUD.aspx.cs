@@ -54,7 +54,7 @@ namespace WebApp.SamplePages
                     Album album = controller.GetAlbum(int.Parse(albumID));                    
                     if (album == null)
                     {
-                        //ClearControls();
+                        ClearControls();
                         throw new Exception("Record no longer exists on file.");
                     }
                     else
@@ -68,6 +68,53 @@ namespace WebApp.SamplePages
                     }
                 },"Find Album", "Album found" //success messages
             );    
+        }
+        protected void ClearControls()
+        {
+            EditAlbumID.Text = "";
+            EditTitle.Text = "";
+            EditReleaseYear.Text = "";
+            EditReleaseLabel.Text = "";
+            EditAlbumArtistList.SelectedIndex = 0;
+        }
+
+        protected void Add_Click(object sender, EventArgs e)
+        {
+            if (Page.IsValid)
+            {
+                string title = EditTitle.Text;
+                int year = int.Parse(EditReleaseYear.Text);
+                string label = EditReleaseLabel.Text == "" ? null : EditReleaseLabel.Text;
+                int artist = int.Parse(EditAlbumArtistList.SelectedValue);
+
+                Album newAlbum = new Album();
+                newAlbum.ArtistID = artist;
+                newAlbum.Title = title;
+                newAlbum.ReleaseYear = year;
+                newAlbum.ReleaseLabel = label;
+
+                MessageUserControl.TryRun(() =>
+                {
+                    AlbumController controller = new AlbumController();
+                    int albumID = controller.Album_Add(newAlbum);
+                    EditAlbumID.Text = albumID.ToString(); //redoes ODS controls
+                    if (AlbumList.Rows.Count > 0)
+                    {
+                        AlbumList.DataBind();
+                    }
+                    
+                }, "Sucessful!", "Album added to file.");
+            }
+        }
+
+        protected void Update_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Remove_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
