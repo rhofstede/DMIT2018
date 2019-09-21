@@ -1,44 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-#region
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-#endregion
-
 namespace ChinookSystem.Data.Entities
 {
-    [Table("Albums")]
-    public class Album
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+
+    public partial class Album
     {
-        [Key]
-        public int AlbumID { get; set; }
-        public string Title { get; set; }
-        public int ArtistID { get; set; }
-        public int ReleaseYear { get; set; }
-        private string _releaseLabel;
-        public string ReleaseLabel
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Album()
         {
-            get
-            {
-                return _releaseLabel;
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    _releaseLabel = null;
-                    _releaseLabel = null;
-                }
-                else
-                {
-                    _releaseLabel = value;
-                }
-            }
+            Tracks = new HashSet<Track>();
         }
+
+        public int AlbumId { get; set; }
+
+        [Required(ErrorMessage ="Album title required.")]
+        [StringLength(160, ErrorMessage ="Album title limited to 160 characters.")]
+        public string Title { get; set; }
+
+        public int ArtistId { get; set; }
+
+        public int ReleaseYear { get; set; }
+
+        [StringLength(50, ErrorMessage ="Release label limited to 50 characters.")]
+        public string ReleaseLabel { get; set; }
+
         public virtual Artist Artist { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Track> Tracks { get; set; }
     }
 }

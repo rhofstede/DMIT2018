@@ -1,44 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-#region
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-#endregion
-
 namespace ChinookSystem.Data.Entities
 {
-    [Table("Artists")]
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
-    public class Artist
+    public partial class Artist
     {
-        //[Key, Column(Order = n)] - for compound key
-        //[Key, DatabaseGenerated(DatabaseGeneratedOption.None)] - for non-identity PK
-        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)] - for info computed from other fields
-        [Key]
-        public int ArtistID { get; set; }
-        private string _name;
-        public string Name
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Artist()
         {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    _name = null;
-                }
-                else
-                {
-                    _name = value;
-                }
-            }
+            Albums = new HashSet<Album>();
         }
+
+        public int ArtistId { get; set; }
+
+        [StringLength(120, ErrorMessage ="Artist name limited to 120 characters.")]
+        public string Name { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Album> Albums { get; set; }
     }
 }
