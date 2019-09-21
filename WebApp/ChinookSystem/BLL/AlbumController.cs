@@ -38,7 +38,7 @@ namespace ChinookSystem.BLL
         {
             using(var context = new ChinookContext())
             {
-                var results = from x in context.Albums where x.ArtistID == artistID select x;                
+                var results = from x in context.Albums where x.ArtistId == artistID select x;                
                 return results.ToList();
             }
         }
@@ -52,7 +52,7 @@ namespace ChinookSystem.BLL
             {
                 context.Albums.Add(album);  //staged
                 context.SaveChanges();      //committed
-                return album.AlbumID;
+                return album.AlbumId;
             }
         }
 
@@ -69,7 +69,7 @@ namespace ChinookSystem.BLL
         [DataObjectMethod(DataObjectMethodType.Delete, false)]
         public int Album_Delete(Album album)
         {
-            return Album_Delete(album.AlbumID);
+            return Album_Delete(album.AlbumId);
         }
         public int Album_Delete(int albumID)
         {

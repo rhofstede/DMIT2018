@@ -32,7 +32,7 @@ namespace WebApp.SamplePages
 
             ArtistList.DataSource = artistList;
             ArtistList.DataTextField = nameof(Artist.Name);
-            ArtistList.DataValueField = nameof(Artist.ArtistID);
+            ArtistList.DataValueField = nameof(Artist.ArtistId);
             ArtistList.DataBind();
             //ArtistList.Items.Insert(0, "Select");
         }
@@ -59,9 +59,9 @@ namespace WebApp.SamplePages
                     }
                     else
                     {
-                        EditAlbumID.Text = album.AlbumID.ToString();
+                        EditAlbumID.Text = album.AlbumId.ToString();
                         EditTitle.Text = album.Title;
-                        EditAlbumArtistList.SelectedValue = album.ArtistID.ToString();
+                        EditAlbumArtistList.SelectedValue = album.ArtistId.ToString();
                         EditReleaseYear.Text = album.ReleaseYear.ToString();
                         EditReleaseLabel.Text = album.ReleaseLabel ?? "";
                         //EditReleaseLabel.Text = album.ReleaseLabel == null ? "" : album.ReleaseLabel;
@@ -88,7 +88,7 @@ namespace WebApp.SamplePages
                 int artist = int.Parse(EditAlbumArtistList.SelectedValue);
 
                 Album newAlbum = new Album();
-                newAlbum.ArtistID = artist;
+                newAlbum.ArtistId = artist;
                 newAlbum.Title = title;
                 newAlbum.ReleaseYear = year;
                 newAlbum.ReleaseLabel = label;
@@ -130,8 +130,8 @@ namespace WebApp.SamplePages
                     int editAlbumID = int.Parse(EditAlbumID.Text);
 
                     Album newAlbum = new Album();
-                    newAlbum.AlbumID = editAlbumID;
-                    newAlbum.ArtistID = artist;
+                    newAlbum.AlbumId = editAlbumID;
+                    newAlbum.ArtistId = artist;
                     newAlbum.Title = title;
                     newAlbum.ReleaseYear = year;
                     newAlbum.ReleaseLabel = label;

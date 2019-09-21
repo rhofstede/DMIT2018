@@ -41,7 +41,7 @@ namespace ChinookSystem.BLL
             {
                 context.Artists.Add(artist);  //staged
                 context.SaveChanges();      //committed
-                return artist.ArtistID;
+                return artist.ArtistId;
             }
         }
 
