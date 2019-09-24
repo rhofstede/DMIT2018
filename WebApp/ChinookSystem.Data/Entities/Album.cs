@@ -21,7 +21,7 @@ namespace ChinookSystem.Data.Entities
         public string Title { get; set; }
 
         public int ArtistId { get; set; }
-
+        //range validation annotation can check numeric values for ranges of values. Min and max values must be constants. can't use it for a changing year, in this case
         public int ReleaseYear { get; set; }
 
         [StringLength(50, ErrorMessage ="Release label limited to 50 characters.")]
