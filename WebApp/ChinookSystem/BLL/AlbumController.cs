@@ -9,6 +9,7 @@ using ChinookSystem.DAL;
 using ChinookSystem.Data.Entities;
 using System.ComponentModel;
 using DMIT2018Common.UserControls;
+using ChinookSystem.Data.POCOs;
 #endregion
 
 namespace ChinookSystem.BLL
@@ -43,6 +44,25 @@ namespace ChinookSystem.BLL
             using(var context = new ChinookContext())
             {
                 var results = from x in context.Albums where x.ArtistId == artistID select x;                
+                return results.ToList();
+            }
+        }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<AlbumsOfArtist> Album_AlbumsOfArtists(string artistName)
+        {
+            using (var context = new ChinookContext())
+            {
+                
+                var results = from x in context.Albums
+                              where x.Artist.Name.Contains(artistName)
+                              orderby x.ReleaseYear, x.Title
+                              select new AlbumsOfArtist //creates anomalous data set, aka a new class, aka a POKO class
+                              {
+                                  Title = x.Title,
+                                  ArtistName = x.Artist.Name,
+                                  ReleaseYear = x.ReleaseYear,
+                                  ReleaseLabel = x.ReleaseLabel
+                              };
                 return results.ToList();
             }
         }
