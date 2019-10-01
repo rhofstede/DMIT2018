@@ -10,6 +10,7 @@ using ChinookSystem.Data.Entities;
 using System.ComponentModel;
 using DMIT2018Common.UserControls;
 using ChinookSystem.Data.POCOs;
+using ChinookSystem.Data.DTOs;
 #endregion
 
 namespace ChinookSystem.BLL
@@ -64,6 +65,31 @@ namespace ChinookSystem.BLL
                                   ReleaseLabel = x.ReleaseLabel
                               };
                 return results.ToList();
+            }
+        }
+        [DataObjectMethod(DataObjectMethodType.Select,false)]
+        public List<ArtistAlbum> Album_ArtistAlbum()
+        {
+            using (var context = new ChinookContext())
+            {
+                var Tracks =
+                    from x in context.Albums
+                    where x.Tracks.Count > 25
+                    select new ArtistAlbum
+                    {
+                        AlbumTitle = x.Title,
+                        ArtistName = x.Artist.Name,
+                        TrackCount = x.Tracks.Count(),
+                        AlbumPlayTime = x.Tracks.Sum(z => z.Milliseconds),
+                        AlbumTracks = (from y in x.Tracks
+                                       select new AlbumTrack
+                                       {
+                                           TrackName = y.Name,
+                                           TrackGenre = y.Genre.Name,
+                                           TrackTime = y.Milliseconds
+                                       }).ToList()  //make sure the ienumerable is converted to a list here
+                    };
+                return Tracks.ToList();
             }
         }
         #endregion
