@@ -28,30 +28,56 @@ namespace Jan2018DemoWebsite.SamplePages
 
         protected void ArtistFetch_Click(object sender, EventArgs e)
         {
-            
-                //code to go here
-
-          }
+            if (string.IsNullOrEmpty(ArtistName.Text))
+            {
+                MessageUserControl.ShowInfo("Missing data","Enter all or part of an artist name. ");
+            }
+            else
+            {
+                MessageUserControl.TryRun(() =>
+                {
+                    SearchArg.Text = ArtistName.Text;
+                    TracksBy.Text = "Artist";
+                    TracksSelectionList.DataBind(); //executes ods
+                },"Track Search","Select songs to add to playlist.");
+            }       
+        }
 
         protected void MediaTypeFetch_Click(object sender, EventArgs e)
         {
-
-                //code to go here
-
+            MessageUserControl.TryRun(() =>
+                {
+                    SearchArg.Text = MediaTypeDDL.SelectedValue;
+                    TracksBy.Text = "MediaType";
+                    TracksSelectionList.DataBind(); //executes ods
+                }, "Track Search", "Select songs to add to playlist.");
         }
 
         protected void GenreFetch_Click(object sender, EventArgs e)
         {
-
-                //code to go here
-
+            MessageUserControl.TryRun(() =>
+            {
+                SearchArg.Text = GenreDDL.SelectedValue;
+                TracksBy.Text = "Genre";
+                TracksSelectionList.DataBind(); //executes ods
+            }, "Track Search", "Select songs to add to playlist.");
         }
 
         protected void AlbumFetch_Click(object sender, EventArgs e)
         {
-
-                //code to go here
-
+            if (string.IsNullOrEmpty(AlbumTitle.Text))
+            {
+                MessageUserControl.ShowInfo("Missing data", "Enter all or part of an album title. ");
+            }
+            else
+            {
+                MessageUserControl.TryRun(() =>
+                {
+                    SearchArg.Text = AlbumTitle.Text;
+                    TracksBy.Text = "Album";
+                    TracksSelectionList.DataBind(); //executes ods
+                }, "Track Search", "Select songs to add to playlist.");
+            }
         }
 
         protected void PlayListFetch_Click(object sender, EventArgs e)

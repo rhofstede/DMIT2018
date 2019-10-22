@@ -72,19 +72,19 @@ namespace ChinookSystem.BLL
             }
         }
         #endregion  
-        public List<SelectionList> List_ArtistNames()
-        {
-            using (var context = new ChinookContext())
-            {
-                var results = from x in context.Artists
-                              orderby x.Name
-                              select new SelectionList
-                              {
-                                  IDValueField = x.ArtistId,
-                                  DisplayText = x.Name
-                              };
-                return results.ToList();
-            }
-        }
+        //public List<SelectionList> List_ArtistNames()
+        //{
+        //    using (var context = new ChinookContext())
+        //    {
+        //        var results = from x in context.Artists
+        //                      orderby x.Name
+        //                      select new SelectionList
+        //                      {
+        //                          IDValueField = x.ArtistId,
+        //                          DisplayText = x.Name
+        //                      };
+        //        return results.ToList();
+        //    }
+        //}
     }
 }
