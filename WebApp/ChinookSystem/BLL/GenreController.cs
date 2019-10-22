@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-#region
-using ChinookSystem.DAL;
+#region Additional Namespaces
 using ChinookSystem.Data.Entities;
+using ChinookSystem.Data.POCOs;
+using ChinookSystem.DAL;
 using System.ComponentModel;
 #endregion
 
@@ -15,19 +16,19 @@ namespace ChinookSystem.BLL
     [DataObject]
     public class GenreController
     {
-        public List<Genre> Genre_List()
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<SelectionList> List_GenreNames()
         {
             using (var context = new ChinookContext())
             {
-                return context.Genres.ToList();
-            }
-        }
-
-        public Genre GetGenre(int genreID)
-        {
-            using (var context = new ChinookContext())
-            {
-                return context.Genres.Find(genreID);
+                var results = from x in context.Genres
+                              orderby x.Name
+                              select new SelectionList
+                              {
+                                  IDValueField = x.GenreId,
+                                  DisplayText = x.Name
+                              };
+                return results.ToList();
             }
         }
     }

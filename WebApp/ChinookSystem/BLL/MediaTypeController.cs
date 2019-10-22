@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-#region
-using ChinookSystem.DAL;
+#region Additional Namespaces
 using ChinookSystem.Data.Entities;
+using ChinookSystem.Data.POCOs;
+using ChinookSystem.DAL;
 using System.ComponentModel;
 #endregion
 
@@ -15,19 +16,19 @@ namespace ChinookSystem.BLL
     [DataObject]
     public class MediaTypeController
     {
-        public List<MediaType> MediaType_List()
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<SelectionList> List_MediaTypeNames()
         {
             using (var context = new ChinookContext())
             {
-                return context.MediaTypes.ToList();
-            }
-        }
-
-        public MediaType GetMediaType(int mediaTypeID)
-        {
-            using (var context = new ChinookContext())
-            {
-                return context.MediaTypes.Find(mediaTypeID);
+                var results = from x in context.MediaTypes
+                              orderby x.Name
+                              select new SelectionList
+                              {
+                                  IDValueField = x.MediaTypeId,
+                                  DisplayText = x.Name
+                              };
+                return results.ToList();
             }
         }
     }

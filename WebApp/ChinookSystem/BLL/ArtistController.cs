@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ChinookSystem.DAL;
 using ChinookSystem.Data.Entities;
 using System.ComponentModel;
+using ChinookSystem.Data.POCOs;
 #endregion
 
 namespace ChinookSystem.BLL
@@ -70,6 +71,20 @@ namespace ChinookSystem.BLL
                 }
             }
         }
-        #endregion        
+        #endregion  
+        public List<SelectionList> List_ArtistNames()
+        {
+            using (var context = new ChinookContext())
+            {
+                var results = from x in context.Artists
+                              orderby x.Name
+                              select new SelectionList
+                              {
+                                  IDValueField = x.ArtistId,
+                                  DisplayText = x.Name
+                              };
+                return results.ToList();
+            }
+        }
     }
 }
