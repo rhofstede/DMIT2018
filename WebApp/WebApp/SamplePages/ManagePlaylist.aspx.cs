@@ -82,8 +82,22 @@ namespace Jan2018DemoWebsite.SamplePages
 
         protected void PlayListFetch_Click(object sender, EventArgs e)
         {
-            //code to go here
- 
+            if (string.IsNullOrEmpty(PlaylistName.Text))
+            {
+                MessageUserControl.ShowInfo("Missing data", "Enter a playlist name. ");
+            }
+            else
+            {
+                string playlistname = PlaylistName.Text;
+                string username = "HansenB"; //will change when we add security
+                MessageUserControl.TryRun(() =>
+                {
+                    PlaylistTracksController controller = new PlaylistTracksController();
+                    List<UserPlaylistTrack> info = controller.List_TracksForPlaylist(playlistname, username);
+                    PlayList.DataSource = info;
+                    PlayList.DataBind();
+                }, "Playlist Search", "Current Playlist Tracks");
+            }
         }
 
         protected void MoveDown_Click(object sender, EventArgs e)
