@@ -128,8 +128,27 @@ namespace Jan2018DemoWebsite.SamplePages
         protected void TracksSelectionList_ItemCommand(object sender, 
             ListViewCommandEventArgs e)
         {
-            //code to go here
-            
+            //validate incoming parameters
+            if (string.IsNullOrEmpty(PlaylistName.Text))
+            {
+                MessageUserControl.ShowInfo("Required Data ", "Adding a track requires a playlist name.");
+            }
+            else
+            {
+                string playlistName = PlaylistName.Text;
+                //username eventually will come from security. Currently hardcoded 
+                string username = "HansenB";
+                //track id comes from the list view command arguments
+                int trackID = int.Parse(e.CommandArgument.ToString()); //the command argument must be cast to a string, then parsed to an int.
+                MessageUserControl.TryRun(() => 
+                {
+                    PlaylistTracksController controller = new PlaylistTracksController();
+                    controller.Add_TrackToPLaylist(playlistName, username, trackID); //add data here - there can only be one call to the database
+                    List<UserPlaylistTrack> info = controller.List_TracksForPlaylist(playlistName, username); //read data back to user
+                    PlayList.DataSource = info;
+                    PlayList.DataBind();
+                },"Added track", "Track has been added to playlist.");
+            }            
         }
 
     }

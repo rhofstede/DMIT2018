@@ -10,6 +10,7 @@ using ChinookSystem.Data.DTOs;
 using ChinookSystem.DAL;
 using System.ComponentModel;
 using ChinookSystem.Data.POCOs;
+using DMIT2018Common.UserControls;
 #endregion
 
 namespace ChinookSystem.BLL
@@ -51,9 +52,61 @@ namespace ChinookSystem.BLL
         {
             using (var context = new ChinookContext())
             {
-                //code to go here
-                
-             
+                //throw errors with BusinessRuleException
+                List<string> reasons = new List<string>();
+                PlaylistTrack newTrack = null;
+                int trackNumber = 0;
+
+                //find if playlist exists using .IfFirstOrDefault
+                Playlist exists = context.Playlists
+                                    .Where(x => x.UserName.Equals(username, StringComparison.OrdinalIgnoreCase)
+                                    && x.Name.Equals(playlistname, StringComparison.OrdinalIgnoreCase))
+                                    .Select(x => x)
+                                    .FirstOrDefault();
+                ////or in query syntax:
+                //(from x in context.Playlists
+                //  where(x => x.UserName.Equals(username, StringComparison.OrdinalIgnoreCase)
+                //                  && x.Name.Equals(playlistname, StringComparison.OrdinalIgnoreCase))
+                //  select x).FirstOrDefault();
+                if (exists == null)
+                {
+                    //create new playlist
+                    exists = new Playlist();
+                    exists.Name = playlistname;
+                    exists.UserName = username;
+                    exists = context.Playlists.Add(exists); //staged
+                    trackNumber = 1;
+                }
+                else
+                {
+                    //find new track number
+                    newTrack = exists.PlaylistTracks.SingleOrDefault(x => x.TrackId == trackid); //null if doesn't exist
+                    if (newTrack == null)
+                    {
+                        trackNumber = exists.PlaylistTracks.Count() + 1;
+                    }
+                    else
+                    {
+                        reasons.Add("Track already on playlist.");
+                    }
+                }
+
+                //create playlist tracks after checking for errors in creation
+                if (reasons.Count() > 0)
+                {
+                    throw new BusinessRuleException("Adding track to playlist", reasons);
+                }
+                else
+                {
+                    //navigate through Playlist to PlaylistTracks
+                    newTrack = new PlaylistTrack();
+                    newTrack.TrackId = trackid;
+                    newTrack.TrackNumber = trackNumber;
+                    //if PK for Playlist doesn't exist, going through navigational properties on Playlist and using the Hashset will find the correct ID and add to any child records. exists.PlaylistID has a bad PK; don't use it.
+                    exists.PlaylistTracks.Add(newTrack); //stages playlist track
+
+                    context.SaveChanges(); //commits the playlist and all tracks
+                }
             }
         }//eom
         public void MoveTrack(string username, string playlistname, int trackid, int tracknumber, string direction)
