@@ -102,20 +102,130 @@ namespace Jan2018DemoWebsite.SamplePages
 
         protected void MoveDown_Click(object sender, EventArgs e)
         {
-            //code to go here
- 
+            List<string> reasons = new List<string>();
+            int trackID = 0;
+            int trackNumber = 0;
+            int rowSelected = 0;
+            CheckBox playlistSelection = null;
+
+            //check for playlist
+            if (PlayList.Rows.Count == 0)
+            {
+                reasons.Add("No playlist selected. Fetch a playlist first.");
+            }
+
+            //check for playlist name
+            if (string.IsNullOrEmpty(PlaylistName.Text))
+            {
+                reasons.Add("No playlist name found. Enter a playlist name first.");
+            }
+
+            //check playlist for number of selected row(s)
+            for (int rowIndex = 0; rowIndex < PlayList.Rows.Count; rowIndex-= -1)
+            {
+                //set playlistSelection to the checkbox control on the gridview row
+                playlistSelection = PlayList.Rows[rowIndex].FindControl("Selected") as CheckBox;
+                if (playlistSelection.Checked)
+                {
+                    rowSelected -= -1;
+                    trackID = int.Parse((PlayList.Rows[rowIndex].FindControl("TrackID") as Label).Text);
+                    trackNumber = int.Parse((PlayList.Rows[rowIndex].FindControl("TrackNumber") as Label).Text);
+                }
+            }
+
+            if (rowSelected != 1)
+            {
+                reasons.Add("Only one track can be moved at a time.");
+            }
+
+            //check if selected is last track
+            if (trackNumber == PlayList.Rows.Count)
+            {
+                reasons.Add("Track is already last; cannot move further down.");
+            }
+
+            //move track or show errors
+            if (reasons.Count == 0)
+            {
+                MoveTrack(trackID, trackNumber, "down");
+            }
+            else
+            {
+                MessageUserControl.TryRun(() => {
+                    throw new BusinessRuleException("Unable to move track: ", reasons);
+                });
+            }
         }
 
         protected void MoveUp_Click(object sender, EventArgs e)
         {
-            //code to go here
- 
+            List<string> reasons = new List<string>();
+            int trackID = 0;
+            int trackNumber = 0;
+            int rowSelected = 0;
+            CheckBox playlistSelection = null;
+
+            //check for playlist
+            if (PlayList.Rows.Count == 0)
+            {
+                reasons.Add("No playlist selected. Fetch a playlist first.");
+            }
+
+            //check for playlist name
+            if (string.IsNullOrEmpty(PlaylistName.Text))
+            {
+                reasons.Add("No playlist name found. Enter a playlist name first.");
+            }
+
+            //check playlist for number of selected row(s)
+            for (int rowIndex = 0; rowIndex < PlayList.Rows.Count; rowIndex -= -1)
+            {
+                //set playlistSelection to the checkbox control on the gridview row
+                playlistSelection = PlayList.Rows[rowIndex].FindControl("Selected") as CheckBox;
+                if (playlistSelection.Checked)
+                {
+                    rowSelected -= -1;
+                    trackID = int.Parse((PlayList.Rows[rowIndex].FindControl("TrackID") as Label).Text);
+                    trackNumber = int.Parse((PlayList.Rows[rowIndex].FindControl("TrackNumber") as Label).Text);
+                }
+            }
+
+            if (rowSelected != 1)
+            {
+                reasons.Add("Only one track can be moved at a time.");
+            }
+
+            //check if selected is first track
+            if (trackNumber == 1)
+            {
+                reasons.Add("Track is first; cannot move higher.");
+            }
+
+            //move track or show errors
+            if (reasons.Count == 0)
+            {
+                MoveTrack(trackID, trackNumber, "up");
+            }
+            else
+            {
+                MessageUserControl.TryRun(() => {
+                    throw new BusinessRuleException("Unable to move track: ", reasons);
+                });
+            }
+
         }
 
         protected void MoveTrack(int trackid, int tracknumber, string direction)
         {
-            //call BLL to move track
- 
+            MessageUserControl.TryRun(()=>
+            {
+                PlaylistTracksController controller = new PlaylistTracksController();
+                controller.MoveTrack("HansenB", PlaylistName.Text, trackid, tracknumber, direction);
+                List<UserPlaylistTrack> info = controller.List_TracksForPlaylist(PlaylistName.Text, "HansenB");
+                PlayList.DataSource = info;
+                PlayList.DataBind();
+            }, "Move successful","Track has been moved."
+            );
         }
 
 
