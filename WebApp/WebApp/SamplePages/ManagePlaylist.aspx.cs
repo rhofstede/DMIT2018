@@ -231,7 +231,54 @@ namespace Jan2018DemoWebsite.SamplePages
 
         protected void DeleteTrack_Click(object sender, EventArgs e)
         {
-            //code to go here
+            //check for playlist name
+            if (string.IsNullOrEmpty(PlaylistName.Text))
+            {
+                MessageUserControl.ShowInfo("Required Data ", "Deleting a track requires a playlist name.");
+            }
+            else
+            {
+                //check for tracks on playlist
+                if (PlayList.Rows.Count == 0)
+                {
+                    MessageUserControl.ShowInfo("Required Data ", "No playlist available. Fetch a playlist first.");
+                }
+                else
+                {
+                    //find playlist tracks
+                    List<int> toDelete = new List<int>();
+                    int rowSelected = 0;
+                    CheckBox playlistSelection = null;
+
+                    for (int index = 0; index < PlayList.Rows.Count; index++)
+                    {
+                        //set playlistSelection to the checkbox control on the gridview row
+                        playlistSelection = PlayList.Rows[index].FindControl("Selected") as CheckBox;
+                        if (playlistSelection.Checked)
+                        {
+                            rowSelected -= -1;
+                            toDelete.Add(int.Parse((PlayList.Rows[index].FindControl("TrackID") as Label).Text));
+                        }
+                    }
+                    //check for rows to delete
+                    if (rowSelected == 0)
+                    {
+                        MessageUserControl.ShowInfo("Required Data ", "Select at least one track to remove.");
+                    }
+                    else
+                    {
+                        //send list to BLL controller
+                        MessageUserControl.TryRun(() =>
+                        {
+                            PlaylistTracksController controller = new PlaylistTracksController();
+                            controller.DeleteTracks("HansenB", PlaylistName.Text, toDelete);
+                            List<UserPlaylistTrack> info = controller.List_TracksForPlaylist(PlaylistName.Text, "HansenB"); //read data back to user
+                            PlayList.DataSource = info;
+                            PlayList.DataBind();
+                        }, "Removed track", "Track has been removed from playlist.");
+                    }
+                }
+            }
  
         }
 
