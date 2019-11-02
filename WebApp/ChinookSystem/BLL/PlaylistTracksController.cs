@@ -193,9 +193,46 @@ namespace ChinookSystem.BLL
         {
             using (var context = new ChinookContext())
             {
-                
-
-
+                //check for playlist
+                var exists = (from x in context.Playlists
+                              where x.UserName.Equals(username, StringComparison.OrdinalIgnoreCase) &&
+                              x.Name.Equals(playlistname, StringComparison.OrdinalIgnoreCase)
+                              select x).FirstOrDefault();
+                if (exists == null)
+                {
+                    throw new Exception("Playlist removed from system.");
+                }
+                else
+                {
+                    //make list of playlisttracks for keeping 
+                    List<PlaylistTrack> toKeep = exists.PlaylistTracks
+                        .Where(track => !trackstodelete.Any(ttd => track.TrackId == ttd))
+                        .Select (tr => tr).ToList();
+                    //stage track remove
+                    PlaylistTrack item = null;
+                    foreach (var trackID in trackstodelete)
+                    {
+                        item = exists.PlaylistTracks
+                                .Where(tr => tr.TrackId == trackID)
+                                .FirstOrDefault();
+                        if (item != null)
+                        {
+                            exists.PlaylistTracks.Remove(item);
+                        }
+                    }
+                    //renumber kept tracks
+                    int number = 1;
+                    toKeep.Sort((x,y)=> x.TrackNumber.CompareTo(y.TrackNumber));
+                    foreach (var track in toKeep)
+                    {
+                        track.TrackNumber = number;
+                        //stage update
+                        context.Entry(track).Property(y => y.TrackNumber).IsModified = true;
+                        number -= -1;
+                    }
+                    //commit
+                    context.SaveChanges();
+                }
             }
         }//eom
     }
