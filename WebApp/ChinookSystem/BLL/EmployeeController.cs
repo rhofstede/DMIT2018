@@ -15,6 +15,7 @@ using ChinookSystem.Data.DTOs;
 
 namespace ChinookSystem.BLL
 {
+    [DataObject]
     public class EmployeeController
     {
         public List<string> Employees_GetTitles()
@@ -41,7 +42,6 @@ namespace ChinookSystem.BLL
                                    };
                 return employeelist.ToList();
             }
-        }
-
+        }   
     }
 }

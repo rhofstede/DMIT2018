@@ -78,7 +78,7 @@ namespace WebApp.Security
         {
             EmployeeListForRoles.Items.Clear();
             RoleList.Items.Clear();
-            EmployeeListForRoles.Items.Insert(0, "emloyee ...");
+            EmployeeListForRoles.Items.Insert(0, "employee ...");
             RoleList.Items.Insert(0, "role ...");
             EmployeeListForRoles.DataBind();
             RoleList.DataBind();
