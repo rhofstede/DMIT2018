@@ -90,6 +90,7 @@
                                 <asp:MenuItem Text="Artist Albums LinqPad" NavigateUrl="~/SamplePages/DisplayArtistAlbums.aspx"></asp:MenuItem>
                                 <asp:MenuItem Text="DTOs with ODS" NavigateUrl="~/SamplePages/RepeaterExample.aspx"></asp:MenuItem>
                                 <asp:MenuItem Text="OLTP" NavigateUrl="~/SamplePages/ManagePlaylist.aspx"></asp:MenuItem>
+                                <asp:MenuItem Text="Album Details" NavigateUrl="~/SamplePages/AlbumDetails.aspx"></asp:MenuItem>
                             </asp:MenuItem>
                         </Items>
                     </asp:Menu>
